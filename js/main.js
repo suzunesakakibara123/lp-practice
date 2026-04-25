@@ -22,6 +22,7 @@ const waveCanvases = [
 const hamburgerButton = document.querySelector('.hamburger');
 const mobileMenu = document.getElementById('mobile-menu');
 const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
+const newsImageLinks = document.querySelectorAll('.news-image-link');
 const images = document.querySelectorAll('.skill-image');
 
 const loaderDuration = 4000;
@@ -199,5 +200,23 @@ images.forEach((image) => {
 
     image.addEventListener('mouseleave', () => {
         image.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)';
+    });
+});
+
+newsImageLinks.forEach((link) => {
+    link.addEventListener('mouseenter', () => {
+        link.classList.add('is-active');
+    });
+
+    link.addEventListener('mouseleave', () => {
+        link.classList.remove('is-active');
+    });
+
+    link.addEventListener('focus', () => {
+        link.classList.add('is-active');
+    });
+
+    link.addEventListener('blur', () => {
+        link.classList.remove('is-active');
     });
 });
