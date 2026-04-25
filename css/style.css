@@ -374,6 +374,7 @@ a {
   }
 }
 
+/*さらに狭い画面幅でも崩れないようにする*/
 @media (max-width: 480px) {
   .skills-list li {
     width: 100%;
