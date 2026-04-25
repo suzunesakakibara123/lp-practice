@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>lp-practice</title>
-  </head>
-  <body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lp-practice</title>
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+</head>
+
+<body>
   <header class="site-header">
     <nav class="site-nav inner">
-      <a class="brand" href="#" aria-label="SKILLS">
+      <a class="brand" href="#top" aria-label="SKILLS">
         <i class="fas fa-archway fa-3x"></i>
       </a>
       <a class="contact-btn" href="#">Contact</a>
-      <div class="hamburger">
+      <button
+        class="hamburger"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+      >
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
     </nav>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#news">NEWS</a>
+      <a href="#skills">WE ARE SKILLS</a>
+      <a href="#plan">SELECT PLAN</a>
+    </div>
   </header>
   <div id="loader">
     <div class="loader-content">
@@ -29,13 +46,13 @@
   <main id="main-content">
     <section class="keyvisual">
       <canvas id="waveCanvas" aria-hidden="true"></canvas>
-      <div class="inner keyvisual-content">
+      <div class="inner keyvisual-content" id="top">
         <h1>WEB PRODUCTION COMPANY</h1>
         <p>DIRECTION,CONTENT MARKETING</p>
       </div>
     </section>
 
-    <section class="news">
+    <section class="news" id="news">
       <div class="inner news-inner">
         <figure class="news-figure">
           <img src="images/news/news.png" alt="" />
@@ -52,7 +69,7 @@
       </div>
     </section>
 
-    <section class="skills">
+    <section class="skills" id="skills">
       <div class="inner">
         <h2 class="section-title">WE ARE SKILLS</h2>
         <ul class="skills-list">
@@ -78,7 +95,7 @@
       </div>
     </section>
 
-    <section class="plan">
+    <section class="plan" id="plan">
       <div class="inner">
         <h2 class="section-title">SELECT PLAN</h2>
         <table class="plan-table">
@@ -127,6 +144,7 @@
     </section>
 
     <nav class="sns">
+      <canvas id="snsWaveCanvas" aria-hidden="true"></canvas>
       <ul class="sns-list">
         <li>
           <a href="#" aria-label="facebook"><i class="fab fa-facebook-f"></i></a>
@@ -148,5 +166,6 @@
     <p>Copyright(c)</p>
   </footer>
   <script src="js/main.js"></script>
-  </body>
+</body>
+
 </html>
