@@ -22,7 +22,7 @@ a {
 }
 .loader-content h2 {
   color: #fff;
-  font-size: 8em;
+  font-size: clamp(3rem, 14vw, 8rem);
   position: absolute;
   top: 50%;
   left: 50%;
@@ -94,6 +94,9 @@ a {
 
 .site-header {
   background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .site-nav {
@@ -138,6 +141,10 @@ a {
   margin: 5px auto;
   background: #777;
   transition: 0.3s ease;
+}
+
+.mobile-menu {
+  display: none;
 }
 
 .keyvisual {
@@ -310,8 +317,20 @@ a {
 }
 
 .sns {
+  position: relative;
+  overflow: hidden;
   background: #e3f2fd;
   padding: 200px 0;
+}
+
+#snsWaveCanvas {
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 100%;
+  height: 220px;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .sns-list {
@@ -320,6 +339,8 @@ a {
   list-style: none;
   padding: 0;
   margin: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .sns-list a {
@@ -413,6 +434,51 @@ a {
     display: block;
   }
 
+  .hamburger.is-open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .hamburger.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.is-open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.97);
+    border-top: 1px solid #d7e3ef;
+    transition: max-height 0.3s ease;
+  }
+
+  .mobile-menu a {
+    display: block;
+    padding: 0 20px;
+    color: #4a6580;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 0;
+    transition: line-height 0.3s ease, padding 0.3s ease, background 0.2s ease;
+  }
+
+  .mobile-menu.is-open {
+    max-height: 220px;
+  }
+
+  .mobile-menu.is-open a {
+    padding: 18px 20px;
+    line-height: 1.4;
+  }
+
+  .mobile-menu a:hover {
+    background: #eef6fd;
+  }
+
   .keyvisual {
     padding: 200px 0;
   }
@@ -442,6 +508,10 @@ a {
     padding: 50px 0;
   }
 
+  #snsWaveCanvas {
+    height: 150px;
+  }
+
   .sns-list {
     display: block;
   }
@@ -459,6 +529,16 @@ a {
 }
 
 @media (max-width: 480px) {
+  .loader-content {
+    min-width: 0;
+    width: 100%;
+    padding: 0 16px;
+  }
+
+  .loader-content h2 {
+    font-size: clamp(2.2rem, 15vw, 3.75rem);
+  }
+
   .skills-list li {
     width: 100%;
     max-width: 300px;
@@ -472,6 +552,10 @@ a {
 
   #waveCanvas {
     height: 140px;
+  }
+
+  #snsWaveCanvas {
+    height: 120px;
   }
 
   .plan-table {
