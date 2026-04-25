@@ -1,14 +1,33 @@
 const loader = document.getElementById('loader');
 const mainContent = document.getElementById('main-content');
 const loaderWaveText = document.querySelector('.loader-content h2:nth-child(2)');
-const waveCanvas = document.getElementById('waveCanvas');
+const waveCanvases = [
+    {
+        element: document.getElementById('waveCanvas'),
+        layers: [
+            [34, 150, 0.4, 'rgba(255, 255, 255, 0.92)', 62],
+            [30, 120, 0.3, 'rgba(107, 167, 235, 0.55)', 20],
+            [26, 110, 0.5, 'rgba(227, 242, 253, 0.96)', 38]
+        ]
+    },
+    {
+        element: document.getElementById('snsWaveCanvas'),
+        layers: [
+            [28, 140, 0.35, 'rgba(255, 255, 255, 0.82)', 52],
+            [22, 108, 0.26, 'rgba(203, 227, 233, 0.96)', 20],
+            [18, 90, 0.46, 'rgba(207, 216, 220, 0.9)', 30]
+        ]
+    }
+].filter((wave) => wave.element);
+const hamburgerButton = document.querySelector('.hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileMenuLinks = document.querySelectorAll('#mobile-menu a');
 const images = document.querySelectorAll('.skill-image');
 
 const loaderDuration = 4000;
 const loaderVisibleDuration = 2000;
 
 let loaderAnimationFrameId = null;
-let waveContext = null;
 let waveOffset = 0;
 let waveAnimationFrameId = null;
 
@@ -75,59 +94,88 @@ window.addEventListener('load', () => {
     }, loaderVisibleDuration);
 });
 
-function resizeWaveCanvas() {
-    if (!waveCanvas) {
+function setMobileMenuState(isOpen) {
+    if (!hamburgerButton || !mobileMenu) {
         return;
     }
 
-    waveCanvas.width = waveCanvas.offsetWidth;
-    waveCanvas.height = waveCanvas.offsetHeight;
+    hamburgerButton.classList.toggle('is-open', isOpen);
+    mobileMenu.classList.toggle('is-open', isOpen);
+    hamburgerButton.setAttribute('aria-expanded', String(isOpen));
+    hamburgerButton.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
 }
 
-function drawWaveLayer(amplitude, wavelength, speed, color, verticalOffset) {
-    const width = waveCanvas.width;
-    const height = waveCanvas.height;
+if (hamburgerButton && mobileMenu) {
+    hamburgerButton.addEventListener('click', () => {
+        const isOpen = !mobileMenu.classList.contains('is-open');
+        setMobileMenuState(isOpen);
+    });
+
+    mobileMenuLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+            setMobileMenuState(false);
+        });
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 767) {
+            setMobileMenuState(false);
+        }
+    });
+}
+
+function resizeWaveCanvas() {
+    waveCanvases.forEach((wave) => {
+        wave.element.width = wave.element.offsetWidth;
+        wave.element.height = wave.element.offsetHeight;
+        wave.context = wave.element.getContext('2d');
+    });
+}
+
+function drawWaveLayer(wave, amplitude, wavelength, speed, color, verticalOffset) {
+    const width = wave.element.width;
+    const height = wave.element.height;
     const baseY = height - verticalOffset - amplitude;
 
-    waveContext.beginPath();
-    waveContext.moveTo(0, height);
+    wave.context.beginPath();
+    wave.context.moveTo(0, height);
 
     for (let x = 0; x <= width; x += 8) {
         const y =
             baseY +
             Math.sin(x / wavelength + waveOffset * speed) * amplitude;
-        waveContext.lineTo(x, y);
+        wave.context.lineTo(x, y);
     }
 
-    waveContext.lineTo(width, height);
-    waveContext.closePath();
-    waveContext.fillStyle = color;
-    waveContext.fill();
+    wave.context.lineTo(width, height);
+    wave.context.closePath();
+    wave.context.fillStyle = color;
+    wave.context.fill();
 }
 
 function renderWave() {
-    if (!waveContext) {
+    if (!waveCanvases.length) {
         return;
     }
 
     const progress = (performance.now() % loaderDuration) / loaderDuration;
     waveOffset = progress * Math.PI * 2;
 
-    waveContext.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
-
-    drawWaveLayer(34, 150, 0.4, 'rgba(255, 255, 255, 0.92)', 62);
-    drawWaveLayer(30, 120, 0.3, 'rgba(107, 167, 235, 0.55)', 20);
-    drawWaveLayer(26, 110, 0.5, 'rgba(227, 242, 253, 0.96)', 38);
+    waveCanvases.forEach((wave) => {
+        wave.context.clearRect(0, 0, wave.element.width, wave.element.height);
+        wave.layers.forEach((layer) => {
+            drawWaveLayer(wave, ...layer);
+        });
+    });
 
     waveAnimationFrameId = window.requestAnimationFrame(renderWave);
 }
 
 function initWave() {
-    if (!waveCanvas) {
+    if (!waveCanvases.length) {
         return;
     }
 
-    waveContext = waveCanvas.getContext('2d');
     resizeWaveCanvas();
 
     if (waveAnimationFrameId !== null) {
